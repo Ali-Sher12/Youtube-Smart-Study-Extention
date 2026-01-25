@@ -1,35 +1,98 @@
 "use strict";
 
-/*
-  This script hides all video tiles on YouTube
-  Home and Search pages by removing video-renderer elements.
-*/
+const ALLOWED_KEYWORDS = [
+    "topic",
+    "lecture",
+    "lectures",
+    "course",
+    "courses",
+    "full course",
+    "complete course",
+    "semester",
+    "module",
+    "lesson",
+    "tutorial",
+    "playlist",
+    "#jennyslectures",
+    "gate",
+    "database",
+    "university",
+    "courseware",
+    "system",
+    "management",
+    "placement",
+    "programming",
+    "code",
+    "coding",
+    "lec-",
+    "lec#",
+    "college",
+    "student",
+    "students",
+    "software",
+    "engineering",
+    "syllabus",
+    "discussion"
+];
 
-function blockAllVideos() {
-    /* YouTube video containers on Home and Search pages */
-    const videoSelectors = [
-        "ytd-rich-item-renderer",     // Home page videos
-        "ytd-video-renderer",         // Search results videos
-        "ytd-grid-video-renderer",    // Channel grids
-        "ytd-compact-video-renderer"  // Sidebar suggestions
-    ];
+const ALLOWED_CHANNELS = [
+    "Jenny's Lectures CS IT",
+    "Gate Smashers",
+    "Abdul Bari"
+];
 
-    videoSelectors.forEach(selector => {
-        document.querySelectorAll(selector).forEach(video => {
+function isAllowedChannel(channelName) {
+    if (!channelName) return false;
+    return ALLOWED_CHANNELS.includes(channelName.toLowerCase());
+}
+
+function isAllowedByTitle(title) {
+    if (!title) return false;
+
+    const normalizedTitle = title.toLowerCase();
+
+    return ALLOWED_KEYWORDS.some(keyword =>
+        normalizedTitle.includes(keyword)
+    );
+}
+
+function filterVideoTiles() {
+    const videoRenderers = document.querySelectorAll(
+        "ytd-rich-item-renderer, ytd-video-renderer"
+    );
+
+    videoRenderers.forEach(video => {
+        const titleElement = video.querySelector("#video-title");
+        const channelElement = video.querySelector(
+            "ytd-channel-name a, ytd-channel-name yt-formatted-string"
+        );
+
+        const titleText = titleElement ? titleElement.textContent.trim() : "";
+        const channelText = channelElement ? channelElement.textContent.trim() : "";
+
+        const allowed =
+            isAllowedChannel(channelText) ||
+            isAllowedByTitle(titleText);
+
+        if (!allowed) {
             video.style.display = "none";
-        });
+        }
     });
 }
 
-/* Run once on initial load */
-blockAllVideos();
+function blockCommentsSection() {
+    const comments = document.querySelector("ytd-comments");
+    if (comments) {
+        comments.style.display = "none";
+    }
+}
 
-/*
-  YouTube is a Single Page Application (SPA).
-  New videos load dynamically, so we observe DOM mutations.
-*/
+filterVideoTiles();
+blockCommentsSection();
+
 const observer = new MutationObserver(() => {
-    blockAllVideos();
+    filterVideoTiles();
+    blockCommentsSection();
 });
 
 observer.observe(document.body, {
