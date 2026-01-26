@@ -1,9 +1,5 @@
-"use strict";
+"use strict"; //chatGPT said to use this
 
-/*
-  Allowed keywords indicating lectures or structured courses.
-  All keywords are lowercase to guarantee case-insensitive substring matching.
-*/
 const ALLOWED_KEYWORDS = [
     "topic",
     "lecture",
@@ -37,28 +33,18 @@ const ALLOWED_KEYWORDS = [
     "discussion"
 ];
 
-/*
-  Allowed channels.
-  Videos from these channels are always allowed.
-*/
-const ALLOWED_CHANNELS = [
+const ALLOWED_CHANNELS = [ // if the video belongs to this channel then automatically allowed.
     "jenny's lectures cs it",
     "gate smashers",
     "abdul bari"
 ];
 
-/*
-  Checks whether the channel is explicitly allowed.
-*/
+
 function isAllowedChannel(channelName) {
     if (!channelName) return false;
     return ALLOWED_CHANNELS.includes(channelName.toLowerCase());
 }
 
-/*
-  Checks whether the video title matches allowed keywords
-  (case-insensitive substring matching).
-*/
 function isAllowedByTitle(title) {
     if (!title) return false;
 
@@ -69,9 +55,6 @@ function isAllowedByTitle(title) {
     );
 }
 
-/*
-  Filters video tiles on Home and Search pages.
-*/
 function filterVideoTiles() {
     const videoRenderers = document.querySelectorAll(
         "ytd-rich-item-renderer, ytd-video-renderer"
@@ -96,20 +79,13 @@ function filterVideoTiles() {
     });
 }
 
-/*
-  Blocks the comment section on allowed videos.
-*/
-function blockCommentsSection() {
+function blockCommentsSection() {// blocking the comment section because why not
     const comments = document.querySelector("ytd-comments");
     if (comments) {
         comments.style.display = "none";
     }
 }
 
-/*
-  Enforces policy for the currently playing video.
-  If the video is not allowed, redirect to YouTube home.
-*/
 function enforceCurrentlyPlayingVideoPolicy() {
     if (!location.pathname.startsWith("/watch")) return;
 
@@ -130,16 +106,11 @@ function enforceCurrentlyPlayingVideoPolicy() {
     }
 }
 
-/*
-  Initial execution
-*/
 filterVideoTiles();
 blockCommentsSection();
 enforceCurrentlyPlayingVideoPolicy();
 
-/*
-  Observe DOM mutations to handle YouTube SPA behavior.
-*/
+//Thanks chatGPT for adding ts function
 const observer = new MutationObserver(() => {
     filterVideoTiles();
     blockCommentsSection();
