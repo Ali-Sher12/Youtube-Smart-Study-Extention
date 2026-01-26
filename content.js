@@ -18,7 +18,6 @@ const ALLOWED_KEYWORDS = [
     "database",
     "university",
     "courseware",
-    "system",
     "management",
     "placement",
     "programming",
@@ -30,7 +29,6 @@ const ALLOWED_KEYWORDS = [
     "student",
     "students",
     "software",
-    "engineering",
     "syllabus",
     "discussion"
 ];
