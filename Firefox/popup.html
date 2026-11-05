@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>STREAMLINE</title>
+  <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+  <header>
+    <h1>STREAMLINE</h1>
+    <p id="summary"></p>
+  </header>
+
+  <section id="channelsSection">
+    <label class="toggle">
+      <input type="checkbox" id="onlyChannels">
+      <span>Allow these channels</span>
+    </label>
+    <ul id="channelList" class="chips"></ul>
+    <form id="channelForm" class="add">
+      <textarea id="channelInput" rows="2" placeholder="Add channels, one per line" autocomplete="off"></textarea>
+      <button type="submit">Add</button>
+    </form>
+  </section>
+
+  <div id="modeGroup" class="mode" role="radiogroup" aria-label="How the two rules combine">
+    <label><input type="radio" name="matchMode" value="and"><span>AND</span></label>
+    <label><input type="radio" name="matchMode" value="or"><span>OR</span></label>
+  </div>
+
+  <section id="keywordsSection">
+    <label class="toggle">
+      <input type="checkbox" id="onlyKeywords">
+      <span>Allow these keywords</span>
+    </label>
+    <ul id="keywordList" class="chips"></ul>
+    <form id="keywordForm" class="add">
+      <textarea id="keywordInput" rows="2" placeholder="Add keywords, one per line" autocomplete="off"></textarea>
+      <button type="submit">Add</button>
+    </form>
+  </section>
+
+  <footer>
+    <button type="button" id="reset" class="link">Reset to defaults</button>
+  </footer>
+
+  <script src="defaults.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>
